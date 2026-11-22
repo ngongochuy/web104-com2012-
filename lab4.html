@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4 - Mảng và đối tượng</title>
+</head>
+<body>
+    <h1>Lab 4 - Mảng và đối tượng trong JavaScript</h1>
+
+    <h2>Bài 1. Danh sách mua sắm</h2>
+    <p>Xem kết quả Bài 1 trong Console (F12).</p>
+
+    <h2>Bài 2. Lọc và nhân đôi số chẵn</h2>
+    <pre id="bai2"></pre>
+
+    <h2>Bài 3. Điểm sinh viên</h2>
+    <pre id="bai3"></pre>
+
+    <h2>Bài 4. Sắp xếp sản phẩm theo giá</h2>
+    <pre id="bai4"></pre>
+
+    <h2>Bài 5. Quản lý tồn kho</h2>
+    <p>Cho danh sách mặt hàng có tên và số lượng. Tìm những mặt hàng còn dưới 5 sản phẩm.</p>
+    <pre id="bai5"></pre>
+
+    <h2>Bài 6. Dữ liệu giả cho 100 sinh viên</h2>
+    <details>
+        <summary>Prompt tạo dữ liệu</summary>
+        <p>Hãy tạo một mảng JavaScript gồm 100 sinh viên giả lập để luyện tập mảng và đối tượng. Dùng hai thuộc tính <code>name</code> và <code>score</code> như Bài 3. Tên là họ tên tiếng Việt và điểm nằm trong khoảng từ 0 đến 10.</p>
+    </details>
+    <pre id="bai6"></pre>
+
+    <script>
+        // Bài 1: Các thao tác theo mã mẫu trong đề.
+        let shoppingList = ["Trứng", "Thịt", "Rau"];
+        console.log("Số lượng ban đầu:", shoppingList.length);
+        shoppingList.push("Sữa");
+        shoppingList.unshift("Bánh mì");
+        let removedItem = shoppingList.pop();
+        console.log("Mặt hàng bị xóa:", removedItem);
+        console.log("Mặt hàng thứ 2:", shoppingList[1]);
+
+        // Bài 2: filter lọc phần tử, map tạo mảng giá trị mới.
+        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const evenNumbers = numbers.filter(function (number) {
+            return number % 2 === 0;
+        });
+        const doubledEvenNumbers = evenNumbers.map(function (number) {
+            return number * 2;
+        });
+        document.getElementById("bai2").textContent =
+            "Các số chẵn: " + evenNumbers.join(", ") + "\n" +
+            "Các số chẵn nhân đôi: " + doubledEvenNumbers.join(", ");
+
+        // Bài 3: Dùng đúng danh sách sinh viên trong đề.
+        const students = [
+            { name: "An", score: 8.2 },
+            { name: "Bình", score: 7.5 },
+            { name: "Chi", score: 9.1 },
+            { name: "Duy", score: 6.8 },
+            { name: "Hà", score: 8.7 },
+            { name: "Khánh", score: 5.9 },
+            { name: "Lan", score: 7.8 },
+            { name: "Minh", score: 9.4 },
+            { name: "Ngọc", score: 6.5 },
+            { name: "Quân", score: 8.0 }
+        ];
+        const highScores = students.filter(function (student) {
+            return student.score > 8;
+        });
+        let bestStudent = students[0];
+        let totalScore = 0;
+        for (let i = 0; i < students.length; i++) {
+            totalScore += students[i].score;
+            if (students[i].score > bestStudent.score) {
+                bestStudent = students[i];
+            }
+        }
+        const averageScore = totalScore / students.length;
+        const studentNames = students.map(function (student) {
+            return student.name;
+        });
+        const sortedStudents = students.slice().sort(function (a, b) {
+            return b.score - a.score;
+        });
+        function showStudentScore(student) {
+            return student.name + " - " + student.score.toFixed(1);
+        }
+        document.getElementById("bai3").textContent =
+            "Điểm trên 8:\n" + highScores.map(showStudentScore).join("\n") + "\n\n" +
+            "Điểm cao nhất: " + showStudentScore(bestStudent) + "\n" +
+            "Điểm trung bình: " + averageScore.toFixed(2) + "\n" +
+            "Danh sách tên: " + studentNames.join(", ") + "\n\n" +
+            "Điểm giảm dần:\n" + sortedStudents.map(showStudentScore).join("\n");
+
+        // Bài 4: sort với phép trừ để sắp xếp theo giá dạng số.
+        const products = [
+            { name: "Laptop", price: 1200 },
+            { name: "Mouse", price: 30 },
+            { name: "Keyboard", price: 75 },
+            { name: "Monitor", price: 300 }
+        ];
+        products.sort(function (a, b) {
+            return a.price - b.price;
+        });
+        console.log("Mảng sản phẩm đã sắp xếp:", products);
+        document.getElementById("bai4").textContent = products.map(function (product) {
+            return product.name + " - " + product.price;
+        }).join("\n");
+
+        // Bài 5: Lọc mặt hàng theo số lượng.
+        const inventory = [
+            { name: "Bút bi", quantity: 12 },
+            { name: "Vở", quantity: 3 },
+            { name: "Thước", quantity: 0 },
+            { name: "Bút chì", quantity: 5 }
+        ];
+        const lowStock = inventory.filter(function (item) {
+            return item.quantity < 5;
+        });
+        document.getElementById("bai5").textContent =
+            "Mặt hàng còn dưới 5 sản phẩm:\n" + lowStock.map(function (item) {
+                return item.name + " - còn " + item.quantity;
+            }).join("\n");
+
+        // Bài 6: Kết hợp 10 họ và 10 tên đệm + tên để tạo 100 sinh viên.
+        const lastNames = ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Đặng", "Bùi"];
+        const givenNames = ["Minh An", "Gia Bảo", "Ngọc Chi", "Quang Duy", "Thu Hà",
+            "Anh Khoa", "Khánh Linh", "Đức Minh", "Bảo Ngọc", "Anh Quân"];
+        const fakeStudents = [];
+        for (let i = 0; i < lastNames.length; i++) {
+            for (let j = 0; j < givenNames.length; j++) {
+                const index = fakeStudents.length;
+                fakeStudents.push({
+                    name: lastNames[i] + " " + givenNames[j],
+                    score: ((index * 17 + 52) % 101) / 10
+                });
+            }
+        }
+        document.getElementById("bai6").textContent = fakeStudents.map(showStudentScore).join("\n");
+    </script>
+</body>
+</html>
