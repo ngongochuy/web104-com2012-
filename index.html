@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 05 - Lập trình cơ sở với JavaScript</title>
+</head>
+<body>
+
+    <script>
+        
+        console.log("--- BÀI 1 ---");
+
+        function Category(id, name) {
+            this.id = id;
+            this.name = name;
+
+   
+            this.displayName = function() {
+                console.log("Tên danh mục: " + this.name);
+            };
+
+      
+            this.updateName = function(newName) {
+                this.name = newName;
+            };
+        }
+
+        let cate1 = new Category(1, "Laptop");
+        cate1.displayName();
+
+
+     
+        console.log("--- BÀI 2 ---");
+
+        class Product {
+            constructor(name, price, description, quantity) {
+                this.name = name;
+                this.price = price;
+                this.description = description;
+                this.quantity = quantity;
+            }
+
+          
+            getDiscountedPrice(percent) {
+                let discount = (this.price * percent) / 100;
+                return this.price - discount;
+            }
+
+           
+            updateQuantity(amount) {
+                this.quantity = this.quantity + amount;
+                if (this.quantity < 0) {
+                    this.quantity = 0;
+                }
+            }
+
+       
+            isInStock() {
+                if (this.quantity > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        
+            getInfo() {
+                return "Tên: " + this.name + " | Giá: " + this.price + " | SL: " + this.quantity + " | Mô tả: " + this.description;
+            }
+
+          
+            totalValue() {
+                return this.price * this.quantity;
+            }
+
+          
+            updatePrice(newPrice) {
+                if (newPrice > 0) {
+                    this.price = newPrice;
+                }
+            }
+        }
+
+        let sp1 = new Product("Chuột không dây", 200000, "Màu đen", 10);
+        let sp2 = new Product("Bàn phím cơ", 500000, "Led RGB", 5);
+
+        console.log(sp1.getInfo());
+        console.log("Giá sau giảm 10%:", sp1.getDiscountedPrice(10));
+        console.log("Còn hàng không:", sp1.isInStock());
+        console.log("Tổng giá trị kho:", sp1.totalValue());
+
+
+      
+        console.log("--- BÀI 3 ---");
+
+        class Cart {
+            constructor() {
+                this.items = []; // Mảng chứa { product, quantity }
+            }
+
+           
+            addProduct(product, qty) {
+                for (let i = 0; i < this.items.length; i++) {
+                    if (this.items[i].product.name === product.name) {
+                        this.items[i].quantity += qty;
+                        return;
+                    }
+                }
+                this.items.push({
+                    product: product,
+                    quantity: qty
+                });
+            }
+
+         
+            removeProduct(productName) {
+                for (let i = 0; i < this.items.length; i++) {
+                    if (this.items[i].product.name === productName) {
+                        this.items.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+         
+            updateProductQuantity(productName, qty) {
+                for (let i = 0; i < this.items.length; i++) {
+                    if (this.items[i].product.name === productName) {
+                        if (qty <= 0) {
+                            this.removeProduct(productName);
+                        } else {
+                            this.items[i].quantity = qty;
+                        }
+                        break;
+                    }
+                }
+            }
+
+           
+            getTotal() {
+                let total = 0;
+                for (let i = 0; i < this.items.length; i++) {
+                    let price = this.items[i].product.price;
+                    let qty = this.items[i].quantity;
+                    total += price * qty;
+                }
+                return total;
+            }
+
+          
+            getCartInfo() {
+                if (this.items.length === 0) {
+                    return "Giỏ hàng trống";
+                }
+                let info = "";
+                for (let i = 0; i < this.items.length; i++) {
+                    let name = this.items[i].product.name;
+                    let qty = this.items[i].quantity;
+                    info += name + " (SL: " + qty + ")\n";
+                }
+                return info;
+            }
+
+         
+            clearCart() {
+                this.items = [];
+            }
+        }
+
+        let myCart = new Cart();
+        myCart.addProduct(sp1, 2);
+        myCart.addProduct(sp2, 1);
+        myCart.updateProductQuantity("Chuột không dây", 3);
+        console.log("Danh sách giỏ hàng:\n" + myCart.getCartInfo());
+        console.log("Tổng tiền giỏ hàng:", myCart.getTotal());
+
+
+    
+        console.log("--- BÀI 4 ---");
+        cate1.updateName("Laptop Gaming");
+        cate1.displayName();
+
+
+      
+        console.log("--- BÀI 5 ---");
+
+        class Book {
+            constructor(id, title) {
+                this.id = id;
+                this.title = title;
+                this.isBorrowed = false;
+            }
+        }
+
+        class Student {
+            constructor(studentId, name) {
+                this.studentId = studentId;
+                this.name = name;
+            }
+
+            borrowBook(book) {
+                if (book.isBorrowed === false) {
+                    book.isBorrowed = true;
+                    console.log(this.name + " đã mượn sách: " + book.title);
+                } else {
+                    console.log("Sách " + book.title + " đã có người mượn!");
+                }
+            }
+
+            returnBook(book) {
+                if (book.isBorrowed === true) {
+                    book.isBorrowed = false;
+                    console.log(this.name + " đã trả sách: " + book.title);
+                } else {
+                    console.log("Sách này chưa được mượn.");
+                }
+            }
+        }
+
+        let book1 = new Book("S01", "Lập trình Web cơ bản");
+        let sv1 = new Student("PH12345", "Nguyễn Văn A");
+
+        sv1.borrowBook(book1);
+        sv1.borrowBook(book1);
+        sv1.returnBook(book1);
+    </script>
+</body>
+</html>
